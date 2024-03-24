@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_URL_POOLED") // uses connection pooling
+  directUrl = env("POSTGRES_URL_DIRECT") // uses a direct connection
+}
+
+model User {
+  id      String   @id @default(cuid())
+  markers Marker[]
+}
+
+model Marker {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+  updatedAt   DateTime @updatedAt @map(name: "updated_at")
+  user        User     @relation(fields: [id], references: [id])
+}
