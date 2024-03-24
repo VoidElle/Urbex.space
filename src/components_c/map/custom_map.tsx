@@ -63,7 +63,8 @@ export default function CustomMap(): React.JSX.Element {
             mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
             initialViewState={viewport}
             style={{height: "100vh", position: "absolute", zIndex: "-999"}}
-            mapStyle="mapbox://styles/mapbox/streets-v9"
+            // mapStyle="mapbox://styles/mapbox/streets-v9"
+            mapStyle={"mapbox://styles/lucadelc/clu636v3201wx01nrf44mdkot"}
         >
             <GeolocateControl
                 position={"top-left"}
