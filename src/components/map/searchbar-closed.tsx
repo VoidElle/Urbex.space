@@ -12,7 +12,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import {Searchbar} from "@/components_c/map/searchbar";
+import {Searchbar} from "@/components/map/searchbar";
 
 interface Props {
     open: boolean,
@@ -39,8 +39,9 @@ export function SearchbarClosed(props: Props) {
             <PopoverContent className="w-[500px] p-0">
                 <Command>
                     <Searchbar
-                    open={props.open}
-                    onOpenChange={props.onOpenChange}/>
+                        open={props.open}
+                        onOpenChange={props.onOpenChange}
+                    />
                 </Command>
             </PopoverContent>
         </Popover>

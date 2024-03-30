@@ -1,3 +1,5 @@
+"use client";
+
 import {
     GearIcon,
     SewingPinIcon,
@@ -12,20 +14,24 @@ import {
 } from "@/components/ui/command"
 import {MapIcon} from "lucide-react";
 import {SearchbarAction} from "@/utils/enums";
-import AddPointDialog from "@/components_c/dialogs/add_point_dialog";
 
 interface Props {
     open: boolean,
     onOpenChange: any,
 }
 
-export function Searchbar(props: Props) {
+export const Searchbar = (props: Props) => {
     return (
         <Command className="rounded-lg border shadow-md">
             <CommandInput placeholder="Choose an option..." />
             <CommandList>
                 <CommandGroup heading="Location">
-                    <CommandItem onSelect={() => elementSelected(props, SearchbarAction.ADD_LOCATION)}>
+                    <CommandItem onSelect={() => {
+
+                        // eslint-disable-next-line react-hooks/rules-of-hooks
+                        // show();
+
+                    }}>
                         <SewingPinIcon className="mr-2 h-4 w-4" />
                         <span>Add a location</span>
                     </CommandItem>
@@ -48,5 +54,4 @@ export function Searchbar(props: Props) {
 
 const elementSelected = (props: Props, searchbarAction: SearchbarAction) => {
     console.log("VALUE: " + searchbarAction);
-    props.onOpenChange(true);
 };

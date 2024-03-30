@@ -1,16 +1,20 @@
 "use client";
 
 import React, {useEffect, useState} from "react";
-import CustomUserButton from "@/components_c/map/custom_user_button";
-import CustomMap from "@/components_c/map/custom_map";
-import {Searchbar} from "@/components_c/map/searchbar";
-import {SearchbarClosed} from "@/components_c/map/searchbar_closed";
-import AddPointDialog from "@/components_c/dialogs/add_point_dialog";
+import CustomUserButton from "@/components/map/custom-user-button";
+import CustomMap from "@/components/map/custom-map";
+import {SearchbarClosed} from "@/components/map/searchbar-closed";
+import NiceModal from "@ebay/nice-modal-react";
+
+// import "react-modal-global/styles/modal.scss"
+// import "react-modal-global/styles/layouts.scss"
 
 // Do not change it to import, it will not work.
 const bodyScrollLock = require('body-scroll-lock');
 
 export default function Home() {
+
+    const [addPointDialogOpened, setAddPointDialogOpened] = useState(false);
 
     // Disabling the scroll of the map
     useEffect((): void => {
@@ -19,22 +23,19 @@ export default function Home() {
         disableBodyScroll(targetElement);
     }, []);
 
-    const [open, setOpen] = useState(false);
-
     return (
-        <div id={"map-page-wrapper"} className={"flex flex-col"}>
+        <NiceModal.Provider>
+            <div id={"map-page-wrapper"} className={"flex flex-col"}>
 
-            <AddPointDialog
-                open={open}
-                onOpenChange={setOpen}
-            />
+                <SearchbarClosed
+                    open={addPointDialogOpened}
+                    onOpenChange={setAddPointDialogOpened}
+                />
 
-            <SearchbarClosed                 open={open}
-                                             onOpenChange={setOpen}/>
+                <CustomUserButton />
+                <CustomMap />
 
-            <CustomUserButton />
-            <CustomMap />
-
-        </div>
+            </div>
+        </NiceModal.Provider>
     );
 }

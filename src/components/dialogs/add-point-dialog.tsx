@@ -1,3 +1,5 @@
+"use client";
+
 import {
     AlertDialog,
     AlertDialogAction,
@@ -7,7 +9,6 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
 interface Props {
@@ -18,8 +19,8 @@ interface Props {
 export default function AddPointDialog(props: Props) {
     return (
         <AlertDialog
-            open={props.open}
-            onOpenChange={props.onOpenChange}
+            open={false}
+            onOpenChange={() => {}}
         >
             <AlertDialogContent>
                 <AlertDialogHeader>
