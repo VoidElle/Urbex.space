@@ -12,15 +12,15 @@ import {
 } from "@/components/ui/alert-dialog"
 
 interface Props {
-    open: boolean,
-    onOpenChange: any,
+    isShowing: boolean,
+    onHide: () => void,
 }
 
 export default function AddPointDialog(props: Props) {
     return (
         <AlertDialog
-            open={false}
-            onOpenChange={() => {}}
+            open={props.isShowing}
+            onOpenChange={props.onHide}
         >
             <AlertDialogContent>
                 <AlertDialogHeader>
