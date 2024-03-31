@@ -1,6 +1,6 @@
-import {SearchbarAction} from "@/utils/enums";
-import {CurrentShowedDialog} from "@/components/managers/dialogs-manager";
-import {CurrentShowedDrawer} from "@/components/managers/drawers-manager";
+import { SearchbarAction } from "@/utils/enums";
+import { CurrentShowedDialog } from "@/components/states/dialogs-state";
+import { CurrentShowedDrawer } from "@/components/states/drawers-state";
 
 export interface Props {
 

@@ -2,20 +2,29 @@
 
 import {GearIcon, SewingPinIcon,} from "@radix-ui/react-icons"
 
-import {Command, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator,} from "@/components/ui/command"
-import {MapIcon} from "lucide-react";
-import {SearchbarAction} from "@/utils/enums";
-import {CurrentShowedDialog, DialogsManagerState, useDialogsManager} from "@/components/managers/dialogs-manager";
-import {CurrentShowedDrawer, DrawersManagerState, useDrawersManager} from "@/components/managers/drawers-manager";
+import {
+    Command,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+    CommandSeparator,
+} from "@/components/ui/command"
+
+import { MapIcon } from "lucide-react";
+import { SearchbarAction } from "@/utils/enums";
 import {interceptSearchbarItemClick} from "@/utils/functions";
+import useDialogsState, { CurrentShowedDialog, DialogsState } from "@/components/states/dialogs-state";
+import { CurrentShowedDrawer, DrawersState } from "@/components/states/drawers-state";
+import useDrawersState from "@/components/states/drawers-state";
 
 export const Searchbar = () => {
 
-    const showDialog: (currentShowedDialog: CurrentShowedDialog) => void = useDialogsManager((state: DialogsManagerState) => state.showDialog);
-    const resetDialog: () => void = useDialogsManager((state: DialogsManagerState) => state.reset);
+    const showDialog: (currentShowedDialog: CurrentShowedDialog) => void = useDialogsState((state: DialogsState) => state.showDialog);
+    const resetDialog: () => void = useDialogsState((state: DialogsState) => state.reset);
 
-    const showDrawer: (currentShowedDrawer: CurrentShowedDrawer) => void = useDrawersManager((state: DrawersManagerState) => state.showDrawer);
-    const resetDrawer: () => void = useDrawersManager((state: DrawersManagerState) => state.reset);
+    const showDrawer: (currentShowedDrawer: CurrentShowedDrawer) => void = useDrawersState((state: DrawersState) => state.showDrawer);
+    const resetDrawer: () => void = useDrawersState((state: DrawersState) => state.reset);
 
     return (
         <Command className="rounded-lg border shadow-md">

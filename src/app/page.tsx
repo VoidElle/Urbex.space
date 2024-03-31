@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useEffect } from "react";
+
 import CustomUserButton from "@/components/map/custom-user-button";
 import CustomMap from "@/components/map/custom-map";
-import { SearchbarClosed } from "@/components/map/searchbar-closed";
-import { DialogsManager } from "@/components/managers/dialogs-manager";
-import {DrawersManager} from "@/components/managers/drawers-manager";
+import SearchbarClosed from "@/components/map/searchbar-closed";
+
+import DialogsWrapper from "@/components/wrappers/dialogs-wrapper";
+import DrawersWrapper from "@/components/wrappers/drawers-wrapper";
 
 // Do not change it to import, it will not work.
 const bodyScrollLock = require('body-scroll-lock');
@@ -20,10 +22,13 @@ export default function Home() {
     }, []);
 
     return (
-        <div id={"map-page-wrapper"} className={"flex flex-col"}>
+        <div
+            id={"map-page-wrapper"}
+            className={"flex flex-col"}
+        >
 
-            <DialogsManager />
-            <DrawersManager />
+            <DialogsWrapper />
+            <DrawersWrapper />
 
             <SearchbarClosed />
 

@@ -15,7 +15,7 @@ import {
 import {Searchbar} from "@/components/map/searchbar";
 
 
-export function SearchbarClosed() {
+const SearchbarClosed = (): React.JSX.Element => {
 
     const [open, setOpen] = React.useState(false)
 
@@ -39,5 +39,7 @@ export function SearchbarClosed() {
             </PopoverContent>
         </Popover>
         </div>
-    )
+    );
 }
+
+export default SearchbarClosed;

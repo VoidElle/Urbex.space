@@ -3,6 +3,7 @@
 import Map, {GeolocateControl} from "react-map-gl";
 import React, {useEffect, useRef, useState} from "react";
 import mapboxgl from "mapbox-gl";
+import {normalMapboxStyleUrl} from "@/utils/constants";
 
 const INITIAL_VIEWPORT: Viewport = {
     zoom: 14,
@@ -53,18 +54,19 @@ export default function CustomMap(): React.JSX.Element {
     }, [geoControlRef.current]);
 
     if (viewport.longitude == 0 && viewport.latitude == 0) {
-        return (
-            <div></div>
-        );
+        return <></>;
     }
 
     return (
         <Map
             mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
             initialViewState={viewport}
-            style={{height: "100vh", position: "absolute", zIndex: "-999"}}
-            // mapStyle="mapbox://styles/mapbox/streets-v9"
-            mapStyle={"mapbox://styles/lucadelc/clu636v3201wx01nrf44mdkot"}
+            style={{
+                height: "100vh",
+                position: "absolute",
+                zIndex: "-999"
+            }}
+            mapStyle={normalMapboxStyleUrl}
         >
             <GeolocateControl
                 position={"top-left"}

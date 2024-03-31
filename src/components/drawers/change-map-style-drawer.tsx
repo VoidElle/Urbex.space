@@ -8,7 +8,7 @@ import {
     DrawerHeader,
     DrawerTitle,
 } from "@/components/ui/drawer";
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
 interface Props {
     isShowing: boolean,
@@ -16,7 +16,6 @@ interface Props {
 }
 
 const ChangeMapStyleDrawer = (props: Props) => {
-    console.log("Ciao2 => " + props.isShowing);
     return (
         <Drawer
             open={props.isShowing}
