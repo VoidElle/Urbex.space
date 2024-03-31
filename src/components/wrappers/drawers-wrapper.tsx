@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import ChangeMapStyleDrawer from "@/components/drawers/change-map-style-drawer";
 import useDrawers, {CurrentShowedDrawer, DrawersState} from "@/states/drawers-state";

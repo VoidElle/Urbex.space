@@ -1,25 +1,17 @@
-"use client";
-
-import React, { useEffect } from "react";
+import React from "react";
 
 import CustomUserButton from "@/components/map/custom-user-button";
 import CustomMap from "@/components/map/custom-map";
 import SearchbarClosed from "@/components/map/searchbar-closed";
 
-import DialogsWrapper from "@/wrappers/dialogs-wrapper";
-import DrawersWrapper from "@/wrappers/drawers-wrapper";
+import DialogsWrapper from "@/components/wrappers/dialogs-wrapper";
+import DrawersWrapper from "@/components/wrappers/drawers-wrapper";
+import {DBMap} from "@/utils/constants/interfaces";
+import {getAllMapsStyles} from "@/utils/functions/database-functions";
 
-// Do not change it to import, it will not work.
-const bodyScrollLock = require('body-scroll-lock');
+export default async function Home() {
 
-export default function Home() {
-
-    // Disabling the scroll of the map
-    useEffect((): void => {
-        const disableBodyScroll = bodyScrollLock.disableBodyScroll;
-        const targetElement: HTMLElement = document.querySelector("#map-page-wrapper")!;
-        disableBodyScroll(targetElement);
-    }, []);
+    const mapsStyles: DBMap[] = await getAllMapsStyles();
 
     return (
         <div
@@ -33,7 +25,10 @@ export default function Home() {
             <SearchbarClosed />
 
             <CustomUserButton/>
-            <CustomMap/>
+
+            <CustomMap
+                maps={mapsStyles}
+            />
 
         </div>
     );

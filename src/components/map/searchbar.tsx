@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/command"
 
 import { MapIcon } from "lucide-react";
-import { SearchbarAction } from "@/utils/enums";
-import { interceptSearchbarItemClick } from "@/interceptors/search-bar-interceptor";
+import { SearchbarAction } from "@/utils/constants/enums";
+import { interceptSearchbarItemClick } from "@/utils/interceptors/search-bar-interceptor";
 import useDialogsState, { CurrentShowedDialog, DialogsState } from "@/states/dialogs-state";
 import { CurrentShowedDrawer, DrawersState } from "@/states/drawers-state";
 import useDrawersState from "@/states/drawers-state";

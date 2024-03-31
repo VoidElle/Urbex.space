@@ -3,9 +3,11 @@
 import Map, {GeolocateControl} from "react-map-gl";
 import React, {useEffect, useRef, useState} from "react";
 import mapboxgl from "mapbox-gl";
-import {normalMapboxStyleUrl} from "@/utils/constants";
-import useDialogsState, {CurrentShowedDialog, DialogsState} from "@/states/dialogs-state";
 import useMapStyleState, {MapStyleState} from "@/states/map-style-state";
+import {DBMap, Viewport} from "@/utils/constants/interfaces";
+
+// Do not change it to import, it will not work.
+const bodyScrollLock = require('body-scroll-lock');
 
 const INITIAL_VIEWPORT: Viewport = {
     zoom: 14,
@@ -13,7 +15,21 @@ const INITIAL_VIEWPORT: Viewport = {
     longitude: 0,
 };
 
-export default function CustomMap(): React.JSX.Element {
+interface Props {
+    maps: DBMap[],
+}
+
+export default function CustomMap(props: Props): React.JSX.Element {
+
+    const setStyles: (mapsStyles: DBMap[]) => void = useMapStyleState((state: MapStyleState) => state.setStyles);
+    setStyles(props.maps);
+
+    // Disabling the scroll of the map
+    useEffect((): void => {
+        const disableBodyScroll = bodyScrollLock.disableBodyScroll;
+        const targetElement: HTMLElement = document.querySelector("#map-page-wrapper")!;
+        disableBodyScroll(targetElement);
+    }, []);
 
     const currentStyle: string = useMapStyleState((state: MapStyleState) => state.currentStyle);
 

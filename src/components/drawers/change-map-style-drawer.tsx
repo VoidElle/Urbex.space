@@ -14,6 +14,7 @@ import {
 import useMapStyleState, {MapStyleState} from "@/states/map-style-state";
 import {Card} from "antd";
 import {CardContent} from "@/components/ui/card";
+import {DBMap} from "@/utils/constants/interfaces";
 
 interface Props {
     isShowing: boolean,
@@ -22,7 +23,10 @@ interface Props {
 
 const ChangeMapStyleDrawer = (props: Props) => {
 
-    const changeStyle: () => void = useMapStyleState((state: MapStyleState) => state.change);
+    const mapsStyles: DBMap[] = useMapStyleState((state: MapStyleState) => state.maps);
+    mapsStyles.map((mapStyle: DBMap) => {
+        console.log(mapStyle);
+    });
 
     return (
         <Drawer
@@ -37,24 +41,26 @@ const ChangeMapStyleDrawer = (props: Props) => {
                     </DrawerHeader>
                     <div className="p-4 pb-0">
                         <div className="flex items-center justify-center space-x-2">
-                            <Card>
-                                <CardContent className="flex aspect-square items-center justify-center p-6">
-                                    <span className="text-4xl font-semibold">
-                                        T
-                                    </span>
-                                </CardContent>
-                            </Card>
-                            <Card>
-                                <CardContent className="flex aspect-square items-center justify-center p-6">
-                                    <span className="text-4xl font-semibold">
-                                        T2
-                                    </span>
-                                </CardContent>
-                            </Card>
+                            {
+                                mapsStyles.map((mapStyle: DBMap) => {
+                                    return (
+                                        <div key={mapStyle.id} className="text-center">
+                                            <Card>
+                                                <CardContent className="flex aspect-square items-center justify-center p-6">
+
+                                                </CardContent>
+                                            </Card>
+                                            <span className="text-xs text-muted-foreground">
+                                                {mapStyle.name}
+                                            </span>
+                                        </div>
+                                    );
+                                })
+                            }
                         </div>
                     </div>
                     <DrawerFooter>
-                        <Button>Submit</Button>
+                    <Button>Submit</Button>
                         <DrawerClose asChild>
                             <Button variant="outline">Cancel</Button>
                         </DrawerClose>

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import AddPointDialog from "@/components/dialogs/add-point-dialog";
 import useDialogsState, {

@@ -1,4 +1,4 @@
-import { SearchbarAction } from "@/utils/enums";
+import { SearchbarAction } from "@/utils/constants/enums";
 import { CurrentShowedDialog } from "@/states/dialogs-state";
 import { CurrentShowedDrawer } from "@/states/drawers-state";
 
