@@ -4,7 +4,8 @@ import React, { useEffect } from "react";
 import CustomUserButton from "@/components/map/custom-user-button";
 import CustomMap from "@/components/map/custom-map";
 import { SearchbarClosed } from "@/components/map/searchbar-closed";
-import { DialogsManager } from "@/components/dialogs/dialogs-manager";
+import { DialogsManager } from "@/components/managers/dialogs-manager";
+import {DrawersManager} from "@/components/managers/drawers-manager";
 
 // Do not change it to import, it will not work.
 const bodyScrollLock = require('body-scroll-lock');
@@ -22,6 +23,7 @@ export default function Home() {
         <div id={"map-page-wrapper"} className={"flex flex-col"}>
 
             <DialogsManager />
+            <DrawersManager />
 
             <SearchbarClosed />
 
