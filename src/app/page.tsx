@@ -6,8 +6,8 @@ import CustomUserButton from "@/components/map/custom-user-button";
 import CustomMap from "@/components/map/custom-map";
 import SearchbarClosed from "@/components/map/searchbar-closed";
 
-import DialogsWrapper from "@/components/wrappers/dialogs-wrapper";
-import DrawersWrapper from "@/components/wrappers/drawers-wrapper";
+import DialogsWrapper from "@/wrappers/dialogs-wrapper";
+import DrawersWrapper from "@/wrappers/drawers-wrapper";
 
 // Do not change it to import, it will not work.
 const bodyScrollLock = require('body-scroll-lock');

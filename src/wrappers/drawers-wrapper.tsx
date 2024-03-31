@@ -1,6 +1,6 @@
 import React from "react";
 import ChangeMapStyleDrawer from "@/components/drawers/change-map-style-drawer";
-import useDrawers, {CurrentShowedDrawer, DrawersState} from "@/components/states/drawers-state";
+import useDrawers, {CurrentShowedDrawer, DrawersState} from "@/states/drawers-state";
 
 const DrawersWrapper = (): React.JSX.Element => {
 

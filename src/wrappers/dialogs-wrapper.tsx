@@ -3,7 +3,7 @@ import AddPointDialog from "@/components/dialogs/add-point-dialog";
 import useDialogsState, {
     CurrentShowedDialog,
     DialogsState
-} from "@/components/states/dialogs-state";
+} from "@/states/dialogs-state";
 
 const DialogsWrapper = (): React.JSX.Element => {
 

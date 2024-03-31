@@ -13,10 +13,10 @@ import {
 
 import { MapIcon } from "lucide-react";
 import { SearchbarAction } from "@/utils/enums";
-import {interceptSearchbarItemClick} from "@/utils/functions";
-import useDialogsState, { CurrentShowedDialog, DialogsState } from "@/components/states/dialogs-state";
-import { CurrentShowedDrawer, DrawersState } from "@/components/states/drawers-state";
-import useDrawersState from "@/components/states/drawers-state";
+import { interceptSearchbarItemClick } from "@/interceptors/search-bar-interceptor";
+import useDialogsState, { CurrentShowedDialog, DialogsState } from "@/states/dialogs-state";
+import { CurrentShowedDrawer, DrawersState } from "@/states/drawers-state";
+import useDrawersState from "@/states/drawers-state";
 
 export const Searchbar = () => {
 

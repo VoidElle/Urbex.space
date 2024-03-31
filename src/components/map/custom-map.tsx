@@ -4,6 +4,8 @@ import Map, {GeolocateControl} from "react-map-gl";
 import React, {useEffect, useRef, useState} from "react";
 import mapboxgl from "mapbox-gl";
 import {normalMapboxStyleUrl} from "@/utils/constants";
+import useDialogsState, {CurrentShowedDialog, DialogsState} from "@/states/dialogs-state";
+import useMapStyleState, {MapStyleState} from "@/states/map-style-state";
 
 const INITIAL_VIEWPORT: Viewport = {
     zoom: 14,
@@ -12,6 +14,8 @@ const INITIAL_VIEWPORT: Viewport = {
 };
 
 export default function CustomMap(): React.JSX.Element {
+
+    const currentStyle: string = useMapStyleState((state: MapStyleState) => state.currentStyle);
 
     const geoControlRef = useRef<mapboxgl.GeolocateControl>();
     const [viewport, setViewport] = useState<Viewport>(INITIAL_VIEWPORT);
@@ -66,7 +70,7 @@ export default function CustomMap(): React.JSX.Element {
                 position: "absolute",
                 zIndex: "-999"
             }}
-            mapStyle={normalMapboxStyleUrl}
+            mapStyle={currentStyle}
         >
             <GeolocateControl
                 position={"top-left"}
