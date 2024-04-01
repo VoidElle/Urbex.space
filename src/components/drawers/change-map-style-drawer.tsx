@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react"
 
 import { Button } from "@/components/ui/button"
@@ -16,6 +18,11 @@ import {Card} from "antd";
 import {CardContent} from "@/components/ui/card";
 import {DBMap} from "@/utils/constants/interfaces";
 
+import Image from "next/image";
+import {LOCAL_STORAGE_MAP_STYLE_ID_KEY} from "@/utils/constants/constants";
+import {useEffect, useState} from "react";
+import {getLocalStorageMapStyleId, saveLocalStorageMapStyleId} from "@/utils/functions/local-storage-functions";
+
 interface Props {
     isShowing: boolean,
     onHide: () => void,
@@ -24,9 +31,20 @@ interface Props {
 const ChangeMapStyleDrawer = (props: Props) => {
 
     const mapsStyles: DBMap[] = useMapStyleState((state: MapStyleState) => state.maps);
+    const changeStyle: (i: number) => void = useMapStyleState((state: MapStyleState) => state.changeStyle);
+
     mapsStyles.map((mapStyle: DBMap) => {
         console.log(mapStyle);
     });
+
+    const [selectedMapId, setSelectedMapId] = useState("");
+
+    useEffect((): void => {
+        const getSelectedMapId: string = getLocalStorageMapStyleId();
+        setSelectedMapId(getSelectedMapId);
+    }, []);
+
+    const saveSelectedMapId: (value: string) => void = (value: string) => saveLocalStorageMapStyleId(value);
 
     return (
         <Drawer
@@ -44,10 +62,32 @@ const ChangeMapStyleDrawer = (props: Props) => {
                             {
                                 mapsStyles.map((mapStyle: DBMap) => {
                                     return (
-                                        <div key={mapStyle.id} className="text-center">
-                                            <Card>
-                                                <CardContent className="flex aspect-square items-center justify-center p-6">
+                                        <div key={mapStyle.id} className="text-center" onClick={(): void => {
 
+                                            setSelectedMapId(mapStyle.id);
+                                            saveSelectedMapId(mapStyle.id);
+
+                                            props.onHide();
+
+                                            changeStyle(Number(mapStyle.id));
+
+                                        }}>
+                                            <Card styles={{
+                                                body: selectedMapId == mapStyle.id
+                                                    ? {
+                                                        padding: "8px",
+                                                        borderRadius: "8px",
+                                                        border: "2px solid #000000",
+                                                      }
+                                                    : {},
+                                            }}>
+                                                <CardContent className="m-0 p-0 flex aspect-square">
+                                                    <Image
+                                                        src={mapStyle.imageUrl}
+                                                        width={750}
+                                                        height={750}
+                                                        alt="Placeholder"
+                                                    />
                                                 </CardContent>
                                             </Card>
                                             <span className="text-xs text-muted-foreground">
@@ -60,10 +100,11 @@ const ChangeMapStyleDrawer = (props: Props) => {
                         </div>
                     </div>
                     <DrawerFooter>
-                    <Button>Submit</Button>
-                        <DrawerClose asChild>
-                            <Button variant="outline">Cancel</Button>
-                        </DrawerClose>
+
+                    <Button onClick={(): void => {
+                        props.onHide();
+                    }}>Undo</Button>
+
                     </DrawerFooter>
                 </div>
             </DrawerContent>

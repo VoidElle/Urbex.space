@@ -8,7 +8,8 @@ import {DBMap} from "@/utils/constants/interfaces";
 export interface MapStyleState {
     maps: DBMap[],
     currentStyle: string,
-    change: () => void
+    changeStyle: (i: number) => void,
+    change: () => void,
     setStyles: (mapsStyles: DBMap[]) => void,
 }
 
@@ -24,6 +25,10 @@ const useMapStyleState = create<MapStyleState>(((set) => ({
         currentStyle: state.currentStyle == normalMapboxStyleUrl
             ? satelliteMapboxStyleUrl
             : normalMapboxStyleUrl
+    })),
+
+    changeStyle: (i: number) => set((state: MapStyleState) => ({
+        currentStyle: state.maps[i].urlValue,
     })),
 
     setStyles: (mapsStyles: DBMap[]) => set((state: MapStyleState) => ({

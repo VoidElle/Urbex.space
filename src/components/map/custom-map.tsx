@@ -5,6 +5,7 @@ import React, {useEffect, useRef, useState} from "react";
 import mapboxgl from "mapbox-gl";
 import useMapStyleState, {MapStyleState} from "@/states/map-style-state";
 import {DBMap, Viewport} from "@/utils/constants/interfaces";
+import {getLocalStorageMapStyleId} from "@/utils/functions/local-storage-functions";
 
 // Do not change it to import, it will not work.
 const bodyScrollLock = require('body-scroll-lock');
@@ -21,8 +22,25 @@ interface Props {
 
 export default function CustomMap(props: Props): React.JSX.Element {
 
+    let mapToSet: DBMap | undefined = undefined;
+
     const setStyles: (mapsStyles: DBMap[]) => void = useMapStyleState((state: MapStyleState) => state.setStyles);
+    const changeStyle: (i: number) => void = useMapStyleState((state: MapStyleState) => state.changeStyle);
+
+    const retrievedMapStyleId: string = getLocalStorageMapStyleId();
+
     setStyles(props.maps);
+    for (let dbMap of props.maps) {
+        console.log(`${dbMap.id} == ${retrievedMapStyleId} | ${dbMap.id == retrievedMapStyleId}`);
+        if (dbMap.id == retrievedMapStyleId) {
+            mapToSet = dbMap;
+            break;
+        }
+    }
+
+    if (mapToSet != undefined) {
+        changeStyle(Number(mapToSet.id));
+    }
 
     // Disabling the scroll of the map
     useEffect((): void => {
