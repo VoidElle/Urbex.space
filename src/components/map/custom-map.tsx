@@ -25,28 +25,30 @@ export default function CustomMap(props: Props): React.JSX.Element {
     let mapToSet: DBMap | undefined = undefined;
 
     const setStyles: (mapsStyles: DBMap[]) => void = useMapStyleState((state: MapStyleState) => state.setStyles);
-    const changeStyle: (i: number) => void = useMapStyleState((state: MapStyleState) => state.changeStyle);
-
-    const retrievedMapStyleId: string = getLocalStorageMapStyleId();
-
     setStyles(props.maps);
-    for (let dbMap of props.maps) {
-        console.log(`${dbMap.id} == ${retrievedMapStyleId} | ${dbMap.id == retrievedMapStyleId}`);
-        if (dbMap.id == retrievedMapStyleId) {
-            mapToSet = dbMap;
-            break;
-        }
-    }
 
-    if (mapToSet != undefined) {
-        changeStyle(Number(mapToSet.id));
-    }
+    const changeStyle: (i: number) => void = useMapStyleState((state: MapStyleState) => state.changeStyle);
 
     // Disabling the scroll of the map
     useEffect((): void => {
+
+        const retrievedMapStyleId: string = getLocalStorageMapStyleId();
+        for (let dbMap of props.maps) {
+            console.log(`${dbMap.id} == ${retrievedMapStyleId} | ${dbMap.id == retrievedMapStyleId}`);
+            if (dbMap.id == retrievedMapStyleId) {
+                mapToSet = dbMap;
+                break;
+            }
+        }
+
+        if (mapToSet != undefined) {
+            changeStyle(Number(mapToSet.id));
+        }
+
         const disableBodyScroll = bodyScrollLock.disableBodyScroll;
         const targetElement: HTMLElement = document.querySelector("#map-page-wrapper")!;
         disableBodyScroll(targetElement);
+
     }, []);
 
     const currentStyle: string = useMapStyleState((state: MapStyleState) => state.currentStyle);
