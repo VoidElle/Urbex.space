@@ -1,6 +1,6 @@
 "use client";
 
-import Map, {GeolocateControl, Marker} from "react-map-gl";
+import Map, {GeolocateControl, Marker, MarkerEvent} from "react-map-gl";
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import mapboxgl from "mapbox-gl";
 import useMapStyleState, {MapStyleState} from "@/states/map-style-state";
@@ -121,9 +121,27 @@ export default function CustomMap(): React.JSX.Element {
 
             {
                 markers.map((marker: DBMarker) => {
-                    console.log(`Marker ${marker.id}: Parsed longitude ${Number(marker.longitude)} | Parsed latitude: ${Number(marker.latitude)}`);
                     return(
                         <Marker
+                            onClick={(event): void => {
+
+                                const mapBoxMarker: mapboxgl.Marker = event.target;
+                                if (mapBoxMarker == null){
+                                    console.error("Clicked marker is null...");
+                                    return;
+                                }
+
+
+                                const lngLat: mapboxgl.LngLat = mapBoxMarker.getLngLat();
+                                alert(`ID: ${marker.id} | Longitude: ${lngLat.lng} | Latitude: ${lngLat.lat}`);
+
+                                // const dbMarkerPromise: Promise<DBMarker> = getMarkerByCoords(lngLat.lat, lngLat.lng);
+                                // console.log(dbMarkerPromise);
+                                // dbMarkerPromise.then((dbMarker: DBMarker): void => {
+                                //     console.log(dbMarker);
+                                // })
+
+                            }}
                             key={marker.id}
                             longitude={Number(marker.longitude)}
                             latitude={Number(marker.latitude)}
