@@ -9,24 +9,44 @@ datasource db {
 }
 
 model Users {
-  id      String    @id @default(cuid())
+  // Unique identifier
+  id String @id @default(cuid())
+
+  // Ref of the user's collections
   markers Markers[]
 }
 
 model Markers {
-  id          String   @id @default(cuid())
+  // Unique identifier
+  id String @id @default(cuid())
+
+  // The user ref that created it
+  user_id String
+  user    Users  @relation(fields: [user_id], references: [id])
+
+  // Basic info
   name        String
   description String
-  latitude    Decimal
-  longitude   Decimal
-  createdAt   DateTime @default(now()) @map(name: "created_at")
-  updatedAt   DateTime @updatedAt @map(name: "updated_at")
-  user        Users    @relation(fields: [id], references: [id])
+
+  // Coordinates
+  latitude  Decimal
+  longitude Decimal
+
+  // Utils
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map(name: "updated_at")
 }
 
 model Maps {
-  id       String @id @default(cuid())
-  name     String
+  // Unique identifier
+  id String @id @default(cuid())
+
+  // Name
+  name String
+
+  // Value, the style url of the style
   urlValue String
+
+  // Image url that is going to show on the client
   imageUrl String
 }
