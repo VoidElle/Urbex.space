@@ -1,11 +1,14 @@
 "use client";
 
-import Map, {GeolocateControl} from "react-map-gl";
-import React, {useEffect, useRef, useState} from "react";
+import Map, {GeolocateControl, Marker} from "react-map-gl";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import mapboxgl from "mapbox-gl";
 import useMapStyleState, {MapStyleState} from "@/states/map-style-state";
-import {DBMap, Viewport} from "@/utils/constants/interfaces";
+import {DBMap, DBMarker, Viewport} from "@/utils/constants/interfaces";
 import {getLocalStorageMapStyleId} from "@/utils/functions/local-storage-functions";
+import 'mapbox-gl/dist/mapbox-gl.css';
+import useMapDataState, {MapDataState} from "@/states/map-data-state";
+
 
 // Do not change it to import, it will not work.
 const bodyScrollLock = require('body-scroll-lock');
@@ -16,24 +19,20 @@ const INITIAL_VIEWPORT: Viewport = {
     longitude: 0,
 };
 
-interface Props {
-    maps: DBMap[],
-}
-
-export default function CustomMap(props: Props): React.JSX.Element {
+export default function CustomMap(): React.JSX.Element {
 
     let mapToSet: DBMap | undefined = undefined;
 
-    const setStyles: (mapsStyles: DBMap[]) => void = useMapStyleState((state: MapStyleState) => state.setStyles);
-    setStyles(props.maps);
+    const markers: DBMarker[] = useMapDataState((state: MapDataState) => state.markers);
 
+    const maps: DBMap[] = useMapStyleState((state: MapStyleState) => state.maps);
     const changeStyle: (i: number) => void = useMapStyleState((state: MapStyleState) => state.changeStyle);
 
     // Disabling the scroll of the map
     useEffect((): void => {
 
         const retrievedMapStyleId: string = getLocalStorageMapStyleId();
-        for (let dbMap of props.maps) {
+        for (let dbMap of maps) {
             console.log(`${dbMap.id} == ${retrievedMapStyleId} | ${dbMap.id == retrievedMapStyleId}`);
             if (dbMap.id == retrievedMapStyleId) {
                 mapToSet = dbMap;
@@ -93,12 +92,23 @@ export default function CustomMap(props: Props): React.JSX.Element {
         geoControlRef.current?.trigger();
     }, [geoControlRef.current]);
 
+    const map = useRef(null);
+    const geolocateControlRef = useCallback((ref: any): void => {
+        if (ref) {
+            (async () => {
+                while (!map.current) await ((() => new Promise((resolve) => setTimeout(resolve, 200)))())
+                ref.trigger();
+            })()
+        }
+    }, []);
+
     if (viewport.longitude == 0 && viewport.latitude == 0) {
         return <></>;
     }
 
     return (
         <Map
+            ref={map}
             mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
             initialViewState={viewport}
             style={{
@@ -108,8 +118,25 @@ export default function CustomMap(props: Props): React.JSX.Element {
             }}
             mapStyle={currentStyle}
         >
+
+            {
+                markers.map((marker: DBMarker) => {
+                    console.log(`Marker ${marker.id}: Parsed longitude ${Number(marker.longitude)} | Parsed latitude: ${Number(marker.latitude)}`);
+                    return(
+                        <Marker
+                            key={marker.id}
+                            longitude={Number(marker.longitude)}
+                            latitude={Number(marker.latitude)}
+                        />
+                    );
+                })
+            }
+
             <GeolocateControl
-                position={"top-left"}
+                style={{
+                    opacity: 0,
+                }}
+                ref={geolocateControlRef}
                 showUserLocation={true}
                 showAccuracyCircle={true}
                 positionOptions={{

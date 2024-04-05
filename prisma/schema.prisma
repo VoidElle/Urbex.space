@@ -17,6 +17,8 @@ model Markers {
   id          String   @id @default(cuid())
   name        String
   description String
+  latitude    Decimal
+  longitude   Decimal
   createdAt   DateTime @default(now()) @map(name: "created_at")
   updatedAt   DateTime @updatedAt @map(name: "updated_at")
   user        Users    @relation(fields: [id], references: [id])

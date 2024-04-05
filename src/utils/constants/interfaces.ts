@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+
 export interface Viewport {
     zoom: number,
     latitude: number,
@@ -9,4 +11,13 @@ export interface DBMap {
     imageUrl: string,
     name: string,
     urlValue: string,
+}
+
+export interface DBMarker {
+    id: string,
+    name: string,
+    latitude: Prisma.Decimal,
+    longitude: Prisma.Decimal,
+    createdAt: Date,
+    updatedAt: Date,
 }
