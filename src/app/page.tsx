@@ -9,14 +9,16 @@ import DrawersWrapper from "@/components/wrappers/drawers-wrapper";
 
 import MapInitializer from "@/components/map/map-initializer";
 
-import { DBMap, DBMarker } from "@/utils/constants/interfaces";
 import { getAllMapsStyles, getAllMarkers } from "@/utils/functions/database-functions";
 import { parseSerializable } from "@/utils/functions/functions";
 
+import DbMap from "@/models/db-map";
+import DbMarker from "@/models/db-marker";
+
 export default async function Home(): Promise<React.JSX.Element> {
 
-    const mapsStyles: DBMap[] = await getAllMapsStyles();
-    const markers: DBMarker[] = await getAllMarkers();
+    const mapsStyles: DbMap[] = await getAllMapsStyles();
+    const markers: DbMarker[] = await getAllMarkers();
 
     return (
         <div

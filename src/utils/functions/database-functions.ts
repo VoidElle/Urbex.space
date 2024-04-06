@@ -1,10 +1,12 @@
-import {DBMap, DBMarker} from "@/utils/constants/interfaces";
 import prisma from "@/lib/prisma";
 
-export async function getAllMapsStyles(): Promise<DBMap[]> {
+import DbMarker from "@/models/db-marker";
+import DbMap from "@/models/db-map";
+
+export async function getAllMapsStyles(): Promise<DbMap[]> {
     return prisma.maps.findMany();
 }
 
-export async function getAllMarkers(): Promise<DBMarker[]> {
+export async function getAllMarkers(): Promise<DbMarker[]> {
     return prisma.markers.findMany();
 }

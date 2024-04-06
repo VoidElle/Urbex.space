@@ -1,13 +1,17 @@
 "use client";
 
-import Map, {GeolocateControl, Marker, MarkerEvent} from "react-map-gl";
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
-import useMapStyleState, {MapStyleState} from "@/states/map-style-state";
-import {DBMap, DBMarker, Viewport} from "@/utils/constants/interfaces";
-import {getLocalStorageMapStyleId} from "@/utils/functions/local-storage-functions";
+import Map, { GeolocateControl, Marker } from "react-map-gl";
+import useMapStyleState, { MapStyleState } from "@/states/map-style-state";
+import { Viewport } from "@/utils/constants/interfaces";
+import { getLocalStorageMapStyleId } from "@/utils/functions/local-storage-functions";
 import 'mapbox-gl/dist/mapbox-gl.css';
-import useMapDataState, {MapDataState} from "@/states/map-data-state";
+import useMapDataState, { MapDataState } from "@/states/map-data-state";
+import { MarkerEvent } from "react-map-gl/src/types/events";
+
+import DbMap from "@/models/db-map";
+import DbMarker from "@/models/db-marker";
 
 
 // Do not change it to import, it will not work.
@@ -21,11 +25,11 @@ const INITIAL_VIEWPORT: Viewport = {
 
 export default function CustomMap(): React.JSX.Element {
 
-    let mapToSet: DBMap | undefined = undefined;
+    let mapToSet: DbMap | undefined = undefined;
 
-    const markers: DBMarker[] = useMapDataState((state: MapDataState) => state.markers);
+    const markers: DbMarker[] = useMapDataState((state: MapDataState) => state.markers);
 
-    const maps: DBMap[] = useMapStyleState((state: MapStyleState) => state.maps);
+    const maps: DbMap[] = useMapStyleState((state: MapStyleState) => state.maps);
     const changeStyle: (i: number) => void = useMapStyleState((state: MapStyleState) => state.changeStyle);
 
     // Disabling the scroll of the map
@@ -120,10 +124,11 @@ export default function CustomMap(): React.JSX.Element {
         >
 
             {
-                markers.map((marker: DBMarker) => {
+                markers.map((marker: DbMarker) => {
                     return(
                         <Marker
-                            onClick={(event): void => {
+                            key={marker.id}
+                            onClick={(event: MarkerEvent<mapboxgl.Marker, MouseEvent>): void => {
 
                                 const mapBoxMarker: mapboxgl.Marker = event.target;
                                 if (mapBoxMarker == null){
@@ -142,7 +147,6 @@ export default function CustomMap(): React.JSX.Element {
                                 // })
 
                             }}
-                            key={marker.id}
                             longitude={Number(marker.longitude)}
                             latitude={Number(marker.latitude)}
                         />
