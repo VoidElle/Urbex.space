@@ -1,7 +1,8 @@
 import { create } from "zustand";
 
 export enum CurrentShowedDialog {
-    ADD_POI = 0,
+    POI_ADD = 0,
+    POI_DETAIL = 1,
 }
 
 export interface DialogsState {

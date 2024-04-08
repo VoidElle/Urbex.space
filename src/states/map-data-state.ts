@@ -1,16 +1,16 @@
 import { create } from "zustand";
-import { DBMarker } from "@/utils/constants/interfaces";
+import DbMarker from "@/models/db-marker";
 
 export interface MapDataState {
-    markers: DBMarker[],
-    setMarkers: (markers: DBMarker[]) => void,
+    markers: DbMarker[],
+    setMarkers: (markers: DbMarker[]) => void,
 }
 
 const useMapDataState = create<MapDataState>(((set) => ({
 
     markers: [],
 
-    setMarkers: (markers: DBMarker[]) => set((state: MapDataState) => ({
+    setMarkers: (markers: DbMarker[]) => set((state: MapDataState) => ({
         markers: markers,
     })),
 

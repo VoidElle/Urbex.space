@@ -16,12 +16,11 @@ import {
 import useMapStyleState, {MapStyleState} from "@/states/map-style-state";
 import {Card} from "antd";
 import {CardContent} from "@/components/ui/card";
-import {DBMap} from "@/utils/constants/interfaces";
 
 import Image from "next/image";
-import {LOCAL_STORAGE_MAP_STYLE_ID_KEY} from "@/utils/constants/constants";
 import {useEffect, useState} from "react";
 import {getLocalStorageMapStyleId, saveLocalStorageMapStyleId} from "@/utils/functions/local-storage-functions";
+import DbMap from "@/models/db-map";
 
 interface Props {
     isShowing: boolean,
@@ -30,10 +29,10 @@ interface Props {
 
 const ChangeMapStyleDrawer = (props: Props) => {
 
-    const mapsStyles: DBMap[] = useMapStyleState((state: MapStyleState) => state.maps);
+    const mapsStyles: DbMap[] = useMapStyleState((state: MapStyleState) => state.maps);
     const changeStyle: (i: number) => void = useMapStyleState((state: MapStyleState) => state.changeStyle);
 
-    mapsStyles.map((mapStyle: DBMap) => {
+    mapsStyles.map((mapStyle: DbMap) => {
         console.log(mapStyle);
     });
 
@@ -60,7 +59,7 @@ const ChangeMapStyleDrawer = (props: Props) => {
                     <div className="p-4 pb-0">
                         <div className="flex items-center justify-center space-x-2">
                             {
-                                mapsStyles.map((mapStyle: DBMap) => {
+                                mapsStyles.map((mapStyle: DbMap) => {
                                     return (
                                         <div key={mapStyle.id} className="text-center" onClick={(): void => {
 

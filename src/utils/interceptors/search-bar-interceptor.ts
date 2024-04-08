@@ -19,7 +19,7 @@ const interceptSearchbarItemClick = (props: Props): void => {
 
     switch (props.searchBarAction) {
         case SearchbarAction.ADD_LOCATION:
-            props.showDialog(CurrentShowedDialog.ADD_POI);
+            props.showDialog(CurrentShowedDialog.POI_ADD);
             break;
         case SearchbarAction.MANAGE_LOCATIONS:
             // Todo:

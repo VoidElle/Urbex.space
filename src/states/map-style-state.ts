@@ -3,14 +3,14 @@ import {
     normalMapboxStyleUrl,
     satelliteMapboxStyleUrl,
 } from "@/utils/constants/constants";
-import {DBMap} from "@/utils/constants/interfaces";
+import DbMap from "@/models/db-map";
 
 export interface MapStyleState {
-    maps: DBMap[],
+    maps: DbMap[],
     currentStyle: string,
     changeStyle: (i: number) => void,
     change: () => void,
-    setStyles: (mapsStyles: DBMap[]) => void,
+    setStyles: (mapsStyles: DbMap[]) => void,
 }
 
 const useMapStyleState = create<MapStyleState>(((set) => ({
@@ -31,7 +31,7 @@ const useMapStyleState = create<MapStyleState>(((set) => ({
         currentStyle: state.maps[i].urlValue,
     })),
 
-    setStyles: (mapsStyles: DBMap[]) => set((state: MapStyleState) => ({
+    setStyles: (mapsStyles: DbMap[]) => set((state: MapStyleState) => ({
         maps: mapsStyles,
     })),
 

@@ -1,17 +1,19 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import mapboxgl from "mapbox-gl";
-import Map, { GeolocateControl, Marker } from "react-map-gl";
-import useMapStyleState, { MapStyleState } from "@/states/map-style-state";
-import { Viewport } from "@/utils/constants/interfaces";
-import { getLocalStorageMapStyleId } from "@/utils/functions/local-storage-functions";
+import Map, {GeolocateControl, Marker} from "react-map-gl";
+import useMapStyleState, {MapStyleState} from "@/states/map-style-state";
+import {Viewport} from "@/utils/constants/interfaces";
+import {getLocalStorageMapStyleId} from "@/utils/functions/local-storage-functions";
 import 'mapbox-gl/dist/mapbox-gl.css';
-import useMapDataState, { MapDataState } from "@/states/map-data-state";
-import { MarkerEvent } from "react-map-gl/src/types/events";
+import useMapDataState, {MapDataState} from "@/states/map-data-state";
+import {MarkerEvent} from "react-map-gl/src/types/events";
 
 import DbMap from "@/models/db-map";
 import DbMarker from "@/models/db-marker";
+import useDialogsState, {CurrentShowedDialog, DialogsState} from "@/states/dialogs-state";
+import usePoiDetailDialogState, {PoiDetailDialogState} from "@/states/poi-detail-dialog-state";
 
 
 // Do not change it to import, it will not work.
@@ -28,6 +30,9 @@ export default function CustomMap(): React.JSX.Element {
     let mapToSet: DbMap | undefined = undefined;
 
     const markers: DbMarker[] = useMapDataState((state: MapDataState) => state.markers);
+
+    const setMarker: (marker: DbMarker) => void = usePoiDetailDialogState((state: PoiDetailDialogState) => state.setMarker);
+    const showDialog: (currentShowedDialog: CurrentShowedDialog) => void = useDialogsState((state: DialogsState) => state.showDialog);
 
     const maps: DbMap[] = useMapStyleState((state: MapStyleState) => state.maps);
     const changeStyle: (i: number) => void = useMapStyleState((state: MapStyleState) => state.changeStyle);
@@ -136,9 +141,24 @@ export default function CustomMap(): React.JSX.Element {
                                     return;
                                 }
 
+                                let retrievedDbMarker: DbMarker | null = null;
+                                for (const dbMarker of markers) {
+                                    if (dbMarker.id == marker.id) {
+                                        retrievedDbMarker = dbMarker;
+                                        break;
+                                    }
+                                }
 
-                                const lngLat: mapboxgl.LngLat = mapBoxMarker.getLngLat();
-                                alert(`ID: ${marker.id} | Longitude: ${lngLat.lng} | Latitude: ${lngLat.lat}`);
+                                if (retrievedDbMarker == null) {
+                                    console.error("Could not find retrieved marker");
+                                    return;
+                                }
+
+                                setMarker(retrievedDbMarker);
+                                showDialog(CurrentShowedDialog.POI_DETAIL);
+
+                                // const lngLat: mapboxgl.LngLat = mapBoxMarker.getLngLat();
+                                // alert(`ID: ${marker.id} | Longitude: ${lngLat.lng} | Latitude: ${lngLat.lat}`);
 
                                 // const dbMarkerPromise: Promise<DBMarker> = getMarkerByCoords(lngLat.lat, lngLat.lng);
                                 // console.log(dbMarkerPromise);
