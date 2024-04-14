@@ -42,7 +42,7 @@ export default function CustomMap(): React.JSX.Element {
 
         const retrievedMapStyleId: string = getLocalStorageMapStyleId();
         for (let dbMap of maps) {
-            console.log(`${dbMap.id} == ${retrievedMapStyleId} | ${dbMap.id == retrievedMapStyleId}`);
+            // console.log(`${dbMap.id} == ${retrievedMapStyleId} | ${dbMap.id == retrievedMapStyleId}`);
             if (dbMap.id == retrievedMapStyleId) {
                 mapToSet = dbMap;
                 break;
@@ -65,7 +65,7 @@ export default function CustomMap(): React.JSX.Element {
     const [viewport, setViewport] = useState<Viewport>(INITIAL_VIEWPORT);
 
     const changeMapCoords = (latitude: number, longitude: number): void => {
-        console.log("Latitude: " + latitude + " | Longitude: " + longitude);
+        console.log("INFO: Map -> Latitude: " + latitude + " | Longitude: " + longitude);
         setViewport({
             ...viewport,
             latitude: latitude,
@@ -89,7 +89,7 @@ export default function CustomMap(): React.JSX.Element {
     }
 
     const error = (): void => {
-        console.log("Unable to retrieve your location");
+        console.log("ERROR: Map -> Unable to retrieve the location")
     }
 
     useEffect((): void => {
@@ -111,9 +111,13 @@ export default function CustomMap(): React.JSX.Element {
         }
     }, []);
 
+    // Todo: Change to a loader
+    //      In case of timeout -> Load the map with the viewport even if it's at 0
     if (viewport.longitude == 0 && viewport.latitude == 0) {
+        console.log("ERROR: Map -> Can't load viewport")
         return <></>;
     }
+    console.log("INFO: Map -> Viewport loaded successfully")
 
     return (
         <Map
