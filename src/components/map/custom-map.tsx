@@ -64,7 +64,7 @@ export default function CustomMap(): React.JSX.Element {
     const geoControlRef = useRef<mapboxgl.GeolocateControl>();
     const [viewport, setViewport] = useState<Viewport>(INITIAL_VIEWPORT);
 
-    const changeMapCoords = (latitude: number, longitude: number): void => {
+    function changeMapCoords(latitude: number, longitude: number): void {
         console.log("INFO: Map -> Latitude: " + latitude + " | Longitude: " + longitude);
         setViewport({
             ...viewport,
@@ -73,7 +73,7 @@ export default function CustomMap(): React.JSX.Element {
         });
     };
 
-    const handleLocationRequest = (): void => {
+    function handleLocationRequest(): void {
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(success, error);
@@ -83,12 +83,12 @@ export default function CustomMap(): React.JSX.Element {
         error();
     }
 
-    const success = (positionParam: GeolocationPosition): void => {
+    function success(positionParam: GeolocationPosition): void {
         const coordinates: GeolocationCoordinates = positionParam.coords;
         changeMapCoords(coordinates.latitude, coordinates.longitude);
     }
 
-    const error = (): void => {
+    function error(): void {
         console.log("ERROR: Map -> Unable to retrieve the location")
     }
 
@@ -127,7 +127,6 @@ export default function CustomMap(): React.JSX.Element {
             style={{
                 height: "100vh",
                 position: "absolute",
-                zIndex: "-999"
             }}
             mapStyle={currentStyle}
         >

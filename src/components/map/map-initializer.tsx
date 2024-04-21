@@ -12,7 +12,7 @@ interface Props {
     markers: DbMarker[],
 }
 
-const MapInitializer = (props: Props): React.JSX.Element => {
+export default function MapInitializer(props: Props): React.JSX.Element {
 
     const setStyles: (mapsStyles: DbMap[]) => void = useMapStyleState((state: MapStyleState) => state.setStyles);
     setStyles(props.mapsStyles);
@@ -22,5 +22,3 @@ const MapInitializer = (props: Props): React.JSX.Element => {
 
     return <></>;
 };
-
-export default MapInitializer;

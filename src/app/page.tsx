@@ -14,6 +14,7 @@ import { parseSerializable } from "@/utils/functions/functions";
 
 import DbMap from "@/models/db-map";
 import DbMarker from "@/models/db-marker";
+import {ScrollAreaDemo} from "@/components/side-poi-groups";
 
 export default async function Home(): Promise<React.JSX.Element> {
 
@@ -21,25 +22,32 @@ export default async function Home(): Promise<React.JSX.Element> {
     const markers: DbMarker[] = await getAllMarkers();
 
     return (
-        <div
-            id={"map-page-wrapper"}
-            className={"flex flex-col"}
-        >
-
-            <MapInitializer
-                mapsStyles={parseSerializable(mapsStyles)}
-                markers={parseSerializable(markers)}
-            />
+        <>
 
             <DialogsWrapper />
             <DrawersWrapper />
+
+            <div
+                id={"map-page-wrapper"}
+                className={"flex flex-col"}
+            >
+
+                <MapInitializer
+                    mapsStyles={parseSerializable(mapsStyles)}
+                    markers={parseSerializable(markers)}
+                />
+
+                <CustomMap />
+
+            </div>
+
 
             <SearchbarClosed />
 
             <CustomUserButton />
 
-            <CustomMap />
+            <ScrollAreaDemo />
 
-        </div>
+        </>
     );
 }
