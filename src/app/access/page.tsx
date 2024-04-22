@@ -2,8 +2,8 @@
 
 import React from "react";
 
-import Icon from '@mdi/react';
-import { mdiLockAlertOutline } from '@mdi/js';
+import { redirect } from 'next/navigation';
+import {cookies} from "next/headers";
 
 import {
     InputOTP,
@@ -11,6 +11,10 @@ import {
     InputOTPSeparator,
     InputOTPSlot,
 } from "@/components/ui/input-otp";
+
+import Icon from '@mdi/react';
+import { mdiLockAlertOutline } from '@mdi/js';
+import {ACCESS_CODE} from "@/utils/constants/constants";
 
 export default function AccessPage(): React.JSX.Element {
     return (
@@ -47,4 +51,6 @@ export default function AccessPage(): React.JSX.Element {
 
 function executeVerifyCode(code: string): void {
     console.log(code);
+    cookies().set(ACCESS_CODE, code, { secure: true });
+    redirect("/");
 }
