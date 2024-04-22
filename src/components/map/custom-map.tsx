@@ -127,6 +127,7 @@ export default function CustomMap(): React.JSX.Element {
             style={{
                 height: "100vh",
                 position: "absolute",
+                zIndex: "-100"
             }}
             mapStyle={currentStyle}
         >

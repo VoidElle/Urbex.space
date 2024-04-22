@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Rubik  } from "next/font/google";
 import "./globals.css";
 import Env from "@/utils/env";
 import {ClerkProvider} from "@clerk/nextjs";
 
-const inter = Inter({ subsets: ["latin"] });
+const rubik = Rubik ({
+    weight: '400',
+    subsets: ['latin'],
+});
 
 export const metadata: Metadata = {
   title: "Urbex Space",
@@ -22,7 +25,7 @@ export default function RootLayout({
   return (
       <ClerkProvider>
         <html lang="en">
-          <body className={inter.className}>{children}</body>
+          <body className={rubik.className}>{children}</body>
         </html>
       </ClerkProvider>
   );
