@@ -10,13 +10,19 @@ import DrawersWrapper from "@/components/wrappers/drawers-wrapper";
 import MapInitializer from "@/components/map/map-initializer";
 
 import { getAllMapsStyles, getAllMarkers } from "@/utils/functions/database-functions";
-import { parseSerializable } from "@/utils/functions/functions";
+import {isUserAccessCodeValid, parseSerializable} from "@/utils/functions/functions";
 
 import DbMap from "@/models/db-map";
 import DbMarker from "@/models/db-marker";
 import {ScrollAreaDemo} from "@/components/side-poi-groups";
+import {redirect} from "next/navigation";
 
 export default async function Home(): Promise<React.JSX.Element> {
+
+    const accessCodeValid: boolean = isUserAccessCodeValid();
+    if (!accessCodeValid) {
+        redirect("/access");
+    }
 
     const mapsStyles: DbMap[] = await getAllMapsStyles();
     const markers: DbMarker[] = await getAllMarkers();

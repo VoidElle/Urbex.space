@@ -21,7 +21,7 @@ const SearchbarClosed = (): React.JSX.Element => {
     return (
         <div className={"flex justify-center mt-8"}>
             <Popover open={open} onOpenChange={setOpen} >
-                <PopoverTrigger asChild className={"bg-white  z-20"}>
+                <PopoverTrigger asChild className={"bg-white z-20"}>
                     <Button
                         variant="outline"
                         role="combobox"

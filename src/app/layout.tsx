@@ -3,6 +3,7 @@ import { Rubik  } from "next/font/google";
 import "./globals.css";
 import Env from "@/utils/env";
 import {ClerkProvider} from "@clerk/nextjs";
+import { CookiesProvider } from 'next-client-cookies/server';
 
 const rubik = Rubik ({
     weight: '400',
@@ -23,10 +24,12 @@ export default function RootLayout({
   Env.configureEnvironment();
 
   return (
-      <ClerkProvider>
-        <html lang="en">
-          <body className={rubik.className}>{children}</body>
-        </html>
-      </ClerkProvider>
+      <CookiesProvider>
+          <ClerkProvider>
+            <html lang="en">
+              <body className={rubik.className}>{children}</body>
+            </html>
+          </ClerkProvider>
+      </CookiesProvider>
   );
 }
