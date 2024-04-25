@@ -14,7 +14,7 @@ export function isUserAccessCodeValid(): boolean {
 
     const secretAccessCode: string | undefined = process.env.ACCESS_CODE;
 
-    console.log(`retrievedCookieAccessCode: ${retrievedCookieAccessCode?.value} | secretAccessCode: ${secretAccessCode}`);
+    // console.log(`retrievedCookieAccessCode: ${retrievedCookieAccessCode?.value} | secretAccessCode: ${secretAccessCode}`);
 
     return retrievedCookieAccessCode != undefined && retrievedCookieAccessCode.value == secretAccessCode;
 }

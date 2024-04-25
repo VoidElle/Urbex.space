@@ -6,12 +6,13 @@ import AccessInputOtp from "@/app/access/components/access-input-otp";
 import { mdiLockAlertOutline } from '@mdi/js';
 import { isUserAccessCodeValid } from "@/utils/functions/functions";
 import {redirect} from "next/navigation";
+import {Routes} from "@/utils/routes";
 
 export default function AccessPage(): React.JSX.Element {
 
     const accessCodeValid: boolean = isUserAccessCodeValid();
     if (accessCodeValid) {
-        redirect("/");
+        redirect(Routes.MAP);
     }
 
     return (

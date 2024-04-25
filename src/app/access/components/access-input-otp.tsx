@@ -12,14 +12,7 @@ export default function AccessInputOtp(): React.JSX.Element {
 
     return (
         <div className={"mb-32"}>
-            <InputOTP onComplete={(code) => {
-
-                cookies.set(ACCESS_CODE, code, { secure: true });
-                console.log(`Saved code: ${code}`);
-
-                redirect("/");
-
-            }} maxLength={6}>
+            <InputOTP onComplete={(code) => manageOnComplete(cookies, code)} maxLength={6}>
                 <InputOTPGroup>
                     <InputOTPSlot index={0}/>
                     <InputOTPSlot index={1}/>
@@ -34,4 +27,9 @@ export default function AccessInputOtp(): React.JSX.Element {
             </InputOTP>
         </div>
     );
+}
+
+function manageOnComplete(cookies: Cookies, code: string): void {
+    cookies.set(ACCESS_CODE, code, { secure: true });
+    redirect("/");
 }

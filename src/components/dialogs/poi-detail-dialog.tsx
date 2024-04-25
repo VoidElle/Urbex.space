@@ -14,7 +14,7 @@ import {
 import DbMarker from "@/models/db-marker";
 import usePoiDetailDialogState, {PoiDetailDialogState} from "@/states/poi-detail-dialog-state";
 
-import React from "react";
+import React, {useEffect} from "react";
 
 import { Button } from "@/components/ui/button"
 import {
@@ -37,9 +37,13 @@ interface Props {
 export default function PoiDetailDialog(props: Props): React.JSX.Element {
 
     const marker: DbMarker | null = usePoiDetailDialogState((state: PoiDetailDialogState) => state.marker);
-    if (marker == null) {
-        props.onHide();
-        return <></>;
+
+    if (props.isShowing) {
+        console.log(`MARKER ${marker}`);
+        if (marker == null) {
+            props.onHide();
+            return <></>;
+        }
     }
 
     return (

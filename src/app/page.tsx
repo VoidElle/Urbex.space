@@ -16,12 +16,13 @@ import DbMap from "@/models/db-map";
 import DbMarker from "@/models/db-marker";
 import {ScrollAreaDemo} from "@/components/side-poi-groups";
 import {redirect} from "next/navigation";
+import {Routes} from "@/utils/routes";
 
 export default async function Home(): Promise<React.JSX.Element> {
 
     const accessCodeValid: boolean = isUserAccessCodeValid();
     if (!accessCodeValid) {
-        redirect("/access");
+        redirect(Routes.ACCESS);
     }
 
     const mapsStyles: DbMap[] = await getAllMapsStyles();

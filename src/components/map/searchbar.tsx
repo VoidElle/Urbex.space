@@ -17,6 +17,7 @@ import { interceptSearchbarItemClick } from "@/utils/interceptors/search-bar-int
 import useDialogsState, { CurrentShowedDialog, DialogsState } from "@/states/dialogs-state";
 import { CurrentShowedDrawer, DrawersState } from "@/states/drawers-state";
 import useDrawersState from "@/states/drawers-state";
+import {useEffect} from "react";
 
 export const Searchbar = () => {
 
