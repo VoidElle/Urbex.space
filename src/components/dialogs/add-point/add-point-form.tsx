@@ -15,10 +15,12 @@ import { FormAddPointDialogType } from "@/utils/constants/interfaces";
 
 interface Props {
   form: UseFormReturn<FormAddPointDialogType>;
+
   handleSubmit(values: any): void;
+  closeDialog(): void;
 }
 
-export function ProfileForm(props: Props) {
+export function AddPointForm(props: Props) {
   return (
     <form
       onSubmit={props.form.handleSubmit(props.handleSubmit)}
@@ -78,7 +80,12 @@ export function ProfileForm(props: Props) {
           )}
         />
       </div>
-      <Button type="submit">Submit</Button>
+      <div className={"flex flex-row justify-end space-x-4"}>
+        <Button variant={"outline"} onClick={props.closeDialog}>
+          Cancel
+        </Button>
+        <Button type="submit">Submit</Button>
+      </div>
     </form>
   );
 }

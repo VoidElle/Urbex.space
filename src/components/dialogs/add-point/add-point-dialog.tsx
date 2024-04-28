@@ -11,13 +11,14 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-import { ProfileForm } from "@/components/dialogs/profile-form";
+import { AddPointForm } from "@/components/dialogs/add-point/add-point-form";
 import { z } from "zod";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Form } from "@/components/ui/form";
 import { FormAddPointDialogType } from "@/utils/constants/interfaces";
+import prisma from "@/lib/prisma";
 
 interface Props {
   isShowing: boolean;
@@ -52,6 +53,7 @@ export default function AddPointDialog(props: Props) {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    const { name, description, latitude, longitude } = values;
   }
 
   return (
@@ -63,14 +65,14 @@ export default function AddPointDialog(props: Props) {
           </AlertDialogTitle>
           <AlertDialogDescription>
             <Form {...form}>
-              <ProfileForm form={form} handleSubmit={onSubmit} />
+              <AddPointForm
+                form={form}
+                handleSubmit={onSubmit}
+                closeDialog={props.onHide}
+              />
             </Form>
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction type={"submit"}>Add</AlertDialogAction>
-        </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );
