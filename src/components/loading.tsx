@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import React from "react"
-import { Icons } from "./Icon"
-import useLoadingState, { LoadingState } from "@/states/loading-state"
+import React from "react";
+import { Icons } from "./Icon";
+import useLoadingState, { LoadingState } from "@/states/loading-state";
 
 export default function Loading(): React.JSX.Element {
     const isLoading: boolean = useLoadingState(
         (state: LoadingState) => state.loading
-    )
+    );
 
     if (!isLoading) {
-        return <></>
+        return <></>;
     }
 
     return (
@@ -21,5 +21,5 @@ export default function Loading(): React.JSX.Element {
         >
             <Icons.spinner className="h-20 w-20 animate-spin z-50 text-white" />
         </div>
-    )
+    );
 }
