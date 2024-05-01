@@ -9,52 +9,49 @@ import DrawersWrapper from "@/components/wrappers/drawers-wrapper";
 
 import MapInitializer from "@/components/map/map-initializer";
 
-import { getAllMapsStyles, getAllMarkers } from "@/utils/functions/database-functions";
-import {isUserAccessCodeValid, parseSerializable} from "@/utils/functions/functions";
+import {
+  getAllMapsStyles,
+  getAllMarkers,
+} from "@/utils/functions/database-functions";
+import {
+  isUserAccessCodeValid,
+  parseSerializable,
+} from "@/utils/functions/functions";
 
 import DbMap from "@/models/db-map";
 import DbMarker from "@/models/db-marker";
-import {ScrollAreaDemo} from "@/components/side-poi-groups";
-import {redirect} from "next/navigation";
-import {Routes} from "@/utils/routes";
+import { ScrollAreaDemo } from "@/components/side-poi-groups";
+import { redirect } from "next/navigation";
+import { Routes } from "@/utils/routes";
 
 export default async function Home(): Promise<React.JSX.Element> {
+  const accessCodeValid: boolean = isUserAccessCodeValid();
+  if (!accessCodeValid) {
+    redirect(Routes.ACCESS);
+  }
 
-    const accessCodeValid: boolean = isUserAccessCodeValid();
-    if (!accessCodeValid) {
-        redirect(Routes.ACCESS);
-    }
+  const mapsStyles: DbMap[] = await getAllMapsStyles();
+  const markers: DbMarker[] = await getAllMarkers();
 
-    const mapsStyles: DbMap[] = await getAllMapsStyles();
-    const markers: DbMarker[] = await getAllMarkers();
+  return (
+    <div className={"absolute top-0 right-0 w-screen h-screen"}>
+      <DialogsWrapper />
+      <DrawersWrapper />
 
-    return (
-        <>
+      <div id={"map-page-wrapper"} className={"flex flex-col"}>
+        <MapInitializer
+          mapsStyles={parseSerializable(mapsStyles)}
+          markers={parseSerializable(markers)}
+        />
 
-            <DialogsWrapper />
-            <DrawersWrapper />
+        <CustomMap />
+      </div>
 
-            <div
-                id={"map-page-wrapper"}
-                className={"flex flex-col"}
-            >
+      <SearchbarClosed />
 
-                <MapInitializer
-                    mapsStyles={parseSerializable(mapsStyles)}
-                    markers={parseSerializable(markers)}
-                />
+      <CustomUserButton />
 
-                <CustomMap />
-
-            </div>
-
-
-            <SearchbarClosed />
-
-            <CustomUserButton />
-
-            <ScrollAreaDemo />
-
-        </>
-    );
+      <ScrollAreaDemo />
+    </div>
+  );
 }

@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Rubik  } from "next/font/google";
+import { Rubik } from "next/font/google";
 import "./globals.css";
 import Env from "@/utils/env";
-import {ClerkProvider} from "@clerk/nextjs";
-import { CookiesProvider } from 'next-client-cookies/server';
+import { ClerkProvider } from "@clerk/nextjs";
+import { CookiesProvider } from "next-client-cookies/server";
+import Loading from "@/components/loading";
 
-const rubik = Rubik ({
-    weight: '400',
-    subsets: ['latin'],
+const rubik = Rubik({
+  weight: "400",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -20,16 +21,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   Env.configureEnvironment();
 
   return (
-      <CookiesProvider>
-          <ClerkProvider>
-            <html lang="en">
-              <body className={rubik.className}>{children}</body>
-            </html>
-          </ClerkProvider>
-      </CookiesProvider>
+    <CookiesProvider>
+      <ClerkProvider>
+        <html lang="en">
+          <body className={rubik.className}>
+            <Loading />
+            {children}
+          </body>
+        </html>
+      </ClerkProvider>
+    </CookiesProvider>
   );
 }
