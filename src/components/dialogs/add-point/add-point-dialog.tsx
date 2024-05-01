@@ -2,12 +2,7 @@
 
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
@@ -18,7 +13,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Form } from "@/components/ui/form";
 import { FormAddPointDialogType } from "@/utils/constants/interfaces";
-import prisma from "@/lib/prisma";
+import { ApiRoutes } from "@/utils/network/api-routes";
+import { ApiMethods } from "@/utils/network/api-methods";
+import { AddPoiBody } from "@/utils/network/bodies";
+import { useUser } from "@clerk/nextjs";
+import { JSON_HEADERS } from "@/utils/constants/constants";
 
 interface Props {
   isShowing: boolean;
@@ -39,6 +38,8 @@ const formSchema = z.object({
 });
 
 export default function AddPointDialog(props: Props) {
+  const userState = useUser();
+
   const form: UseFormReturn<FormAddPointDialogType> = useForm<
     z.infer<typeof formSchema>
   >({
@@ -51,28 +52,44 @@ export default function AddPointDialog(props: Props) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    const { name, description, latitude, longitude } = values;
+  function onSubmit(values: z.infer<typeof formSchema>, userState: any): void {
+    if (!userState.user?.id) {
+      console.log("ERROR: User is null, can't make the request!");
+      return;
+    }
+
+    const formObj: FormAddPointDialogType = values;
+    console.log("Form object retrieved by form", formObj);
+
+    const objToSend: AddPoiBody = {
+      userId: userState.user!.id,
+      name: formObj.name,
+      description: formObj.description,
+      latitude: formObj.latitude,
+      longitude: formObj.longitude,
+    };
+    console.log("Form object to send", objToSend);
+
+    fetch(ApiRoutes.urlPoi, {
+      method: ApiMethods.ADD_POI_METHOD,
+      headers: JSON_HEADERS,
+      body: JSON.stringify(objToSend),
+    });
   }
 
   return (
     <AlertDialog open={props.isShowing} onOpenChange={props.onHide}>
       <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle className={"flex justify-center"}>
-            Add a point
-          </AlertDialogTitle>
-          <AlertDialogDescription>
-            <Form {...form}>
-              <AddPointForm
-                form={form}
-                handleSubmit={onSubmit}
-                closeDialog={props.onHide}
-              />
-            </Form>
-          </AlertDialogDescription>
-        </AlertDialogHeader>
+        <AlertDialogTitle className={"flex justify-center"}>
+          Add a point
+        </AlertDialogTitle>
+        <Form {...form}>
+          <AddPointForm
+            form={form}
+            handleSubmit={(values) => onSubmit(values, userState)}
+            closeDialog={props.onHide}
+          />
+        </Form>
       </AlertDialogContent>
     </AlertDialog>
   );
