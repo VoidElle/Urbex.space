@@ -1,17 +1,17 @@
 import { create } from "zustand";
 
 export interface LoadingState {
-  loading: boolean;
-  changeState: () => void;
+	loading: boolean;
+	changeState: (newValue: boolean) => void;
 }
 
 const useLoadingState = create<LoadingState>((set) => ({
-  loading: false,
+	loading: false,
 
-  changeState: () =>
-    set((state: LoadingState) => ({
-      loading: !state.loading,
-    })),
+	changeState: (newValue: boolean) =>
+		set((_: LoadingState) => ({
+			loading: newValue,
+		})),
 }));
 
 export default useLoadingState;
