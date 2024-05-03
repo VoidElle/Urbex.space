@@ -17,8 +17,10 @@ import { ApiRoutes } from "@/utils/network/api-routes";
 import { ApiMethods } from "@/utils/network/api-methods";
 import { AddPoiBody } from "@/utils/network/bodies";
 import { useUser } from "@clerk/nextjs";
-import { JSON_HEADERS } from "@/utils/constants/constants";
 import useLoadingState, { LoadingState } from "@/states/loading-state";
+import { Routes } from "@/utils/routes";
+import { Headers } from "@/utils/constants/headers";
+import { useRouter } from "next/navigation";
 
 interface Props {
 	isShowing: boolean;
@@ -39,7 +41,9 @@ const formSchema = z.object({
 });
 
 export default function AddPointDialog(props: Props) {
+	const router = useRouter();
 	const userState = useUser();
+
 	const changeLoadingState: (newValue: boolean) => void = useLoadingState(
 		(state: LoadingState) => state.changeState
 	);
@@ -82,12 +86,13 @@ export default function AddPointDialog(props: Props) {
 
 		const result: Response = await fetch(ApiRoutes.urlPoi, {
 			method: ApiMethods.ADD_POI_METHOD,
-			headers: JSON_HEADERS,
+			headers: Headers.JSON_HEADERS,
 			body: JSON.stringify(objToSend),
 		});
 		console.log("Response result", result);
 
 		changeLoadingState(false);
+		window.location.reload();
 	}
 
 	return (

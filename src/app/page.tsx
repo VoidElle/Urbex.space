@@ -10,12 +10,12 @@ import DrawersWrapper from "@/components/wrappers/drawers-wrapper";
 import MapInitializer from "@/components/map/map-initializer";
 
 import {
-  getAllMapsStyles,
-  getAllMarkers,
+	getAllMapsStyles,
+	getAllMarkers,
 } from "@/utils/functions/database-functions";
 import {
-  isUserAccessCodeValid,
-  parseSerializable,
+	isUserAccessCodeValid,
+	parseSerializable,
 } from "@/utils/functions/functions";
 
 import DbMap from "@/models/db-map";
@@ -25,33 +25,33 @@ import { redirect } from "next/navigation";
 import { Routes } from "@/utils/routes";
 
 export default async function Home(): Promise<React.JSX.Element> {
-  const accessCodeValid: boolean = isUserAccessCodeValid();
-  if (!accessCodeValid) {
-    redirect(Routes.ACCESS);
-  }
+	const accessCodeValid: boolean = isUserAccessCodeValid();
+	if (!accessCodeValid) {
+		redirect(Routes.ACCESS);
+	}
 
-  const mapsStyles: DbMap[] = await getAllMapsStyles();
-  const markers: DbMarker[] = await getAllMarkers();
+	const mapsStyles: DbMap[] = await getAllMapsStyles();
+	const markers: DbMarker[] = await getAllMarkers();
 
-  return (
-    <div className={"absolute top-0 right-0 w-screen h-screen"}>
-      <DialogsWrapper />
-      <DrawersWrapper />
+	return (
+		<div className={"absolute top-0 right-0 w-screen h-screen"}>
+			<DialogsWrapper />
+			<DrawersWrapper />
 
-      <div id={"map-page-wrapper"} className={"flex flex-col"}>
-        <MapInitializer
-          mapsStyles={parseSerializable(mapsStyles)}
-          markers={parseSerializable(markers)}
-        />
+			<div id={"map-page-wrapper"} className={"flex flex-col"}>
+				<MapInitializer
+					mapsStyles={parseSerializable(mapsStyles)}
+					markers={parseSerializable(markers)}
+				/>
 
-        <CustomMap />
-      </div>
+				<CustomMap />
+			</div>
 
-      <SearchbarClosed />
+			<SearchbarClosed />
 
-      <CustomUserButton />
+			<CustomUserButton />
 
-      <ScrollAreaDemo />
-    </div>
-  );
+			<ScrollAreaDemo />
+		</div>
+	);
 }
