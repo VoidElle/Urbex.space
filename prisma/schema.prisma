@@ -21,20 +21,21 @@ model Markers {
   id String @id @default(cuid())
 
   // The user ref that created it
-  user_id String
-  user    Users  @relation(fields: [user_id], references: [id])
+  userId String
+  user   Users  @relation(fields: [userId], references: [id])
 
   // Basic info
   name        String
   description String
+  imageUrl    String?
 
   // Coordinates
   latitude  Decimal
   longitude Decimal
 
   // Utils
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @default(now()) @updatedAt @map(name: "updated_at")
+  createdAt DateTime @default(now()) @map(name: "createdAt")
+  updatedAt DateTime @default(now()) @updatedAt @map(name: "updatedAt")
 }
 
 model Maps {

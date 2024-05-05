@@ -39,12 +39,14 @@ export default function CustomMap(): React.JSX.Element {
 	const setMarker: (marker: DbMarker) => void = usePoiDetailDialogState(
 		(state: PoiDetailDialogState) => state.setMarker
 	);
+
 	const showDialog: (currentShowedDialog: CurrentShowedDialog) => void =
 		useDialogsState((state: DialogsState) => state.showDialog);
 
 	const maps: DbMap[] = useMapStyleState(
 		(state: MapStyleState) => state.maps
 	);
+
 	const changeStyle: (i: number) => void = useMapStyleState(
 		(state: MapStyleState) => state.changeStyle
 	);
