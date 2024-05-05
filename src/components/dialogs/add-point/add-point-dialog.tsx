@@ -15,7 +15,7 @@ import { Form } from "@/components/ui/form";
 import { FormAddPointDialogType } from "@/utils/constants/interfaces";
 import { ApiRoutes } from "@/utils/network/api-routes";
 import { ApiMethods } from "@/utils/network/api-methods";
-import { AddPoiBody } from "@/utils/network/bodies";
+import { AddPoiBody } from "@/utils/network/api-bodies";
 import { useUser } from "@clerk/nextjs";
 import useLoadingState, { LoadingState } from "@/states/loading-state";
 import { Routes } from "@/utils/routes";

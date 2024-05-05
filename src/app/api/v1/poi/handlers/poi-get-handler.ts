@@ -37,7 +37,6 @@ export async function PoiGetHandler(
 
 const handleGetList = async (request: NextRequest): Promise<NextResponse> => {
 	const result: Markers[] | null = await prisma.markers.findMany();
-	console.log(result);
 
 	return NextResponse.json(result, {
 		status: 200,
@@ -51,7 +50,6 @@ const handleGetDetail = async (request: NextRequest): Promise<NextResponse> => {
 			id: id,
 		},
 	});
-	console.log(result);
 
 	return NextResponse.json(result, {
 		status: 200,

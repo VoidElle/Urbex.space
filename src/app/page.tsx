@@ -10,10 +10,6 @@ import DrawersWrapper from "@/components/wrappers/drawers-wrapper";
 import MapInitializer from "@/components/map/map-initializer";
 
 import {
-	getAllMapsStyles,
-	getAllMarkers,
-} from "@/utils/functions/database-functions";
-import {
 	isUserAccessCodeValid,
 	parseSerializable,
 } from "@/utils/functions/functions";
@@ -23,6 +19,7 @@ import DbMarker from "@/models/db-marker";
 import { ScrollAreaDemo } from "@/components/side-poi-groups";
 import { redirect } from "next/navigation";
 import { Routes } from "@/utils/routes";
+import { ApiRequests } from "@/utils/network/api-requests";
 
 export default async function Home(): Promise<React.JSX.Element> {
 	const accessCodeValid: boolean = isUserAccessCodeValid();
@@ -30,8 +27,8 @@ export default async function Home(): Promise<React.JSX.Element> {
 		redirect(Routes.ACCESS);
 	}
 
-	const mapsStyles: DbMap[] = await getAllMapsStyles();
-	const markers: DbMarker[] = await getAllMarkers();
+	const mapsStyles: DbMap[] = await ApiRequests.getMapsList();
+	const markers: DbMarker[] = await ApiRequests.getPoiList();
 
 	return (
 		<div className={"absolute top-0 right-0 w-screen h-screen"}>
