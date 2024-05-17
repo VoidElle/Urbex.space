@@ -7,6 +7,7 @@ import useDialogsState, {
 	DialogsState,
 } from "@/states/dialogs-state";
 import PoiDetailDialog from "@/components/dialogs/poi-detail-dialog";
+import PoiEditDialog from "@/components/dialogs/edit-poi/poi-edit-dialog";
 
 const DialogsWrapper = (): React.JSX.Element => {
 	const showedDialog: CurrentShowedDialog | undefined = useDialogsState(
@@ -25,6 +26,11 @@ const DialogsWrapper = (): React.JSX.Element => {
 
 			<PoiDetailDialog
 				isShowing={showedDialog == CurrentShowedDialog.POI_DETAIL}
+				onHide={reset}
+			/>
+
+			<PoiEditDialog
+				isShowing={showedDialog == CurrentShowedDialog.POI_EDIT}
 				onHide={reset}
 			/>
 		</>

@@ -6,7 +6,6 @@ import {
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-import { AddPointForm } from "@/components/dialogs/add-point/add-point-form";
 import { z } from "zod";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,10 +14,15 @@ import { Form } from "@/components/ui/form";
 import { FormAddPointDialogType } from "@/utils/constants/interfaces";
 import { ApiRoutes } from "@/utils/network/api-routes";
 import { ApiMethods } from "@/utils/network/api-methods";
-import { AddPoiBody } from "@/utils/network/api-bodies";
-import { useUser } from "@clerk/nextjs";
+import { EditPoiBody } from "@/utils/network/api-bodies";
 import useLoadingState, { LoadingState } from "@/states/loading-state";
 import { Headers } from "@/utils/constants/headers";
+import { PoiEditForm } from "@/components/dialogs/edit-poi/poi-edit-form";
+import DbMarker from "@/models/db-marker";
+import usePoiDetailDialogState, {
+	PoiDetailDialogState,
+} from "@/states/poi-detail-dialog-state";
+import React, { useEffect } from "react";
 
 interface Props {
 	isShowing: boolean;
@@ -38,11 +42,13 @@ const formSchema = z.object({
 	}),
 });
 
-export default function AddPointDialog(props: Props) {
-	const userState = useUser();
-
+export default function PoiEditDialog(props: Props) {
 	const changeLoadingState: (newValue: boolean) => void = useLoadingState(
 		(state: LoadingState) => state.changeState
+	);
+
+	const marker: DbMarker | null = usePoiDetailDialogState(
+		(state: PoiDetailDialogState) => state.marker
 	);
 
 	const form: UseFormReturn<FormAddPointDialogType> = useForm<
@@ -50,27 +56,36 @@ export default function AddPointDialog(props: Props) {
 	>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			name: "",
-			description: "",
-			latitude: "",
-			longitude: "",
+			name: marker?.name,
+			description: marker?.description,
+			latitude: `${marker?.latitude}`,
+			longitude: `${marker?.longitude}`,
 		},
 	});
 
-	async function onSubmit(
-		values: z.infer<typeof formSchema>,
-		userState: any
-	): Promise<void> {
-		if (!userState.user?.id) {
-			console.log("ERROR: User is null, can't make the request!");
-			return;
-		}
+	// Updating of the form's state at the state manager update
+	// (it's not automatically updated at the marker's state change)
+	useEffect(() => {
+		form.setValue("name", `${marker?.name}`);
+		form.setValue("description", `${marker?.description}`);
+		form.setValue("latitude", `${marker?.latitude}`);
+		form.setValue("longitude", `${marker?.longitude}`);
+	}, [marker]);
 
+	if (props.isShowing) {
+		console.log(`MARKER ${marker}`);
+		if (marker == null) {
+			props.onHide();
+			return <></>;
+		}
+	}
+
+	async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
 		const formObj: FormAddPointDialogType = values;
 		console.log("Form object retrieved by form", formObj);
 
-		const objToSend: AddPoiBody = {
-			userId: userState.user!.id,
+		const objToSend: EditPoiBody = {
+			id: marker?.id ?? "",
 			name: formObj.name,
 			description: formObj.description,
 			latitude: formObj.latitude,
@@ -82,7 +97,7 @@ export default function AddPointDialog(props: Props) {
 		changeLoadingState(true);
 
 		const result: Response = await fetch(ApiRoutes.urlPoi, {
-			method: ApiMethods.ADD_POI_METHOD,
+			method: ApiMethods.EDIT_POI_METHOD,
 			headers: Headers.JSON_HEADERS,
 			body: JSON.stringify(objToSend),
 		});
@@ -99,9 +114,9 @@ export default function AddPointDialog(props: Props) {
 					Add a point
 				</AlertDialogTitle>
 				<Form {...form}>
-					<AddPointForm
+					<PoiEditForm
 						form={form}
-						handleSubmit={(values) => onSubmit(values, userState)}
+						handleSubmit={(values) => onSubmit(values)}
 						closeDialog={props.onHide}
 					/>
 				</Form>

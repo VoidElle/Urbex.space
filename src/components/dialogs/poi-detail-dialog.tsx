@@ -18,6 +18,10 @@ import {
 } from "@/components/ui/dialog";
 
 import Image from "next/image";
+import useDialogsState, {
+	CurrentShowedDialog,
+	DialogsState,
+} from "@/states/dialogs-state";
 
 interface Props {
 	isShowing: boolean;
@@ -28,6 +32,9 @@ export default function PoiDetailDialog(props: Props): React.JSX.Element {
 	const marker: DbMarker | null = usePoiDetailDialogState(
 		(state: PoiDetailDialogState) => state.marker
 	);
+
+	const showDialog: (currentShowedDialog: CurrentShowedDialog) => void =
+		useDialogsState((state: DialogsState) => state.showDialog);
 
 	if (props.isShowing) {
 		console.log(`MARKER ${marker}`);
@@ -60,7 +67,12 @@ export default function PoiDetailDialog(props: Props): React.JSX.Element {
 					</DialogDescription>
 				</DialogHeader>
 				<DialogFooter>
-					<Button onClick={() => handleEdit()}>
+					<Button
+						onClick={() => {
+							props.onHide();
+							showDialog(CurrentShowedDialog.POI_EDIT);
+						}}
+					>
 						<span className="mdi mdi-pencil"></span>
 					</Button>
 					<Button
@@ -78,8 +90,6 @@ export default function PoiDetailDialog(props: Props): React.JSX.Element {
 		</Dialog>
 	);
 }
-
-const handleEdit = (): void => {};
 
 const openGoogleMaps = (latitude: Number, longitude: Number): void => {
 	window.open(
