@@ -2,21 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 interface Payload {
-	userId: string;
+	id: string;
 	name: string;
 	description: string;
 	latitude: number;
 	longitude: number;
 }
 
-export async function PoiPostHandler(
+export async function PoiPutHandler(
 	request: NextRequest
 ): Promise<NextResponse> {
 	const data: Payload = await request.json();
 
 	// Error response if all the fields are not specified in the body's request
 	if (
-		!data.userId ||
+		!data.id ||
 		!data.name ||
 		!data.description ||
 		!data.latitude ||
@@ -33,10 +33,12 @@ export async function PoiPostHandler(
 	}
 
 	try {
-		// Try to create a new marker inside the database
-		const marker = await prisma.markers.create({
+		// Try to update the existing marker inside the database
+		const marker = await prisma.markers.update({
+			where: {
+				id: data.id,
+			},
 			data: {
-				userId: data.userId,
 				name: data.name,
 				description: data.description,
 				latitude: data.latitude,
@@ -44,7 +46,7 @@ export async function PoiPostHandler(
 			},
 		});
 
-		// Return the id of the new marker if the process is successful
+		// Return the id of the existing marker if the process is successful
 		return NextResponse.json(
 			JSON.parse(
 				JSON.stringify({
@@ -56,11 +58,11 @@ export async function PoiPostHandler(
 			}
 		);
 	} catch (error) {
-		// Log the error to the console if the creation process fails
+		// Log the error to the console if the updating process fails
 		console.log(error);
 
 		// Return an error message to the client
-		// if the creation process fails
+		// if the updating process fails
 		return NextResponse.json(
 			{
 				error: "Internal server error",

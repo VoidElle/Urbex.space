@@ -19,11 +19,11 @@ export async function PoiGetHandler(
 
 		return await handleGetDetail(request);
 	} catch (error) {
-		// Log the error to the console if the deletion process fails
+		// Log the error to the console if the retrieving process fails
 		console.log(error);
 
 		// Return an error message to the client
-		// if the deletion process fails
+		// if the deletion retrieving process fails
 		return NextResponse.json(
 			{
 				error: "Internal server error",

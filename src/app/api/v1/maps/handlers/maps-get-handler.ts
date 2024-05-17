@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { Maps, Markers } from "@prisma/client";
+import { Maps } from "@prisma/client";
 
 export async function MapsGetHandler(
 	request: NextRequest
