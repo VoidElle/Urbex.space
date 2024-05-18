@@ -44,6 +44,16 @@ export default function PoiDetailDialog(props: Props): React.JSX.Element {
 		}
 	}
 
+	function handleEditButtonClick(): void {
+		props.onHide();
+		showDialog(CurrentShowedDialog.POI_EDIT);
+	}
+
+	function handleDeleteButtonClick(): void {
+		// Todo: Delete request
+		props.onHide();
+	}
+
 	return (
 		<Dialog open={props.isShowing} onOpenChange={props.onHide}>
 			<DialogContent className="sm:max-w-[425px]">
@@ -67,12 +77,10 @@ export default function PoiDetailDialog(props: Props): React.JSX.Element {
 					</DialogDescription>
 				</DialogHeader>
 				<DialogFooter>
-					<Button
-						onClick={() => {
-							props.onHide();
-							showDialog(CurrentShowedDialog.POI_EDIT);
-						}}
-					>
+					<Button onClick={handleDeleteButtonClick}>
+						<span className="mdi mdi-trash-can"></span>
+					</Button>
+					<Button onClick={handleEditButtonClick}>
 						<span className="mdi mdi-pencil"></span>
 					</Button>
 					<Button

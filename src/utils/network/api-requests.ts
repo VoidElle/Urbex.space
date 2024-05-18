@@ -4,6 +4,8 @@ import { ApiMethods } from "@/utils/network/api-methods";
 import { Headers } from "@/utils/constants/headers";
 import { ApiBaseRequest } from "@/utils/network/models/api-base-request";
 import DbMap from "@/models/db-map";
+import { EditPoiBody } from "@/utils/network/api-bodies";
+import MarkerId from "@/models/marker-id";
 
 export class ApiRequests {
 	/**
@@ -17,6 +19,19 @@ export class ApiRequests {
 			ApiMethods.GET_POI_LIST_METHOD,
 			Headers.JSON_HEADERS,
 			null
+		);
+
+		const result: Response = await ApiRequests.#coreRequest(baseRequest);
+
+		return await result.json();
+	};
+
+	static updatePoi = async (body: EditPoiBody): Promise<MarkerId> => {
+		const baseRequest: ApiBaseRequest = new ApiBaseRequest(
+			ApiRoutes.urlPoi,
+			ApiMethods.EDIT_POI_METHOD,
+			Headers.JSON_HEADERS,
+			body
 		);
 
 		const result: Response = await ApiRequests.#coreRequest(baseRequest);

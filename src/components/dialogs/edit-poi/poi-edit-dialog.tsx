@@ -12,17 +12,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Form } from "@/components/ui/form";
 import { FormAddPointDialogType } from "@/utils/constants/interfaces";
-import { ApiRoutes } from "@/utils/network/api-routes";
-import { ApiMethods } from "@/utils/network/api-methods";
 import { EditPoiBody } from "@/utils/network/api-bodies";
 import useLoadingState, { LoadingState } from "@/states/loading-state";
-import { Headers } from "@/utils/constants/headers";
 import { PoiEditForm } from "@/components/dialogs/edit-poi/poi-edit-form";
 import DbMarker from "@/models/db-marker";
 import usePoiDetailDialogState, {
 	PoiDetailDialogState,
 } from "@/states/poi-detail-dialog-state";
 import React, { useEffect } from "react";
+import { ApiRequests } from "@/utils/network/api-requests";
+import MarkerId from "@/models/marker-id";
 
 interface Props {
 	isShowing: boolean;
@@ -96,12 +95,7 @@ export default function PoiEditDialog(props: Props) {
 		props.onHide();
 		changeLoadingState(true);
 
-		const result: Response = await fetch(ApiRoutes.urlPoi, {
-			method: ApiMethods.EDIT_POI_METHOD,
-			headers: Headers.JSON_HEADERS,
-			body: JSON.stringify(objToSend),
-		});
-		console.log("Response result", result);
+		const result: MarkerId = await ApiRequests.updatePoi(objToSend);
 
 		changeLoadingState(false);
 		window.location.reload();

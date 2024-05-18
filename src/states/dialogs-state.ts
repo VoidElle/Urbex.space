@@ -4,6 +4,7 @@ export enum CurrentShowedDialog {
 	POI_ADD = 0,
 	POI_DETAIL = 1,
 	POI_EDIT = 2,
+	POI_MANAGER = 3,
 }
 
 export interface DialogsState {
